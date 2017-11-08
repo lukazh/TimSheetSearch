@@ -1,0 +1,16 @@
+{
+  "name": "TimSheetSearch",
+  "manifest_version": 2,
+  "version": "1.0.0",
+  "description": "Add search function in Tim online table sheet",
+
+  "content_scripts": [{
+    "matches": ["https://*.docs.qq.com/*"],
+    "js": ["js/content.js"],
+	  "run_at": "document_end"
+  }],
+  "permissions": [
+    "tabs", 
+    "activeTab"
+  ]
+}
