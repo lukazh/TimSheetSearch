@@ -114,19 +114,24 @@ script.textContent = `(function() {
 				var hot = sheet.hot;
 				${searchFuntionString}
 				sheet.hot.search = new Search(sheet.hot);
-
-				var searchDomString = '<div style="z-index: 10000; position: fixed; top: 20px; left: 400px;"><input id="searchbox" style="height:25px;" type="text"><span id="searchresult"></span></div>';
+				var searchDomString = '<div style="z-index: 10000;position: fixed;top: 10px;left: 500px;"><label>Search: </label><input id="searchbox" style="height: 19px;" type="text"><span id="searchresult"></span><div><label><input name="matchMethod" type="radio" checked="true" value="equal">Equals</label><label><input name="matchMethod" type="radio" value="contain">Contains</label></div></div>';
 				$("body").append(searchDomString);
 				$("#searchbox").keyup(function(){
 					var queryString = $(this).val().trim();
-					var result = sheet.hot.search.query(queryString);
+					var queryMethod = $("input[name='matchMethod']:checked").val() === "equal" 
+						? function(query, value){return value === query;}
+						: null;
+					var result = sheet.hot.search.query(queryString, null, queryMethod);
 					if(queryString){
 						$("#searchresult").text(result.length + " found");
 					} else{
 						$("#searchresult").text("");
 					}
 					sheet.hot.render();
-				})
+				});
+				$("input[name='matchMethod']").click(function(){
+					$("#searchbox").trigger("keyup");
+				});
 			});
 		}
 	}
